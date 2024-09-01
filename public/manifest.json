@@ -1,0 +1,38 @@
+{
+    "name": "Logistics Application",
+    "description": "A Logistics application that helps Drivers get and deliver people and products faster",
+    "short_name": "Logistics App",
+    "start_url": "/",
+    "lang": "en-US",
+    "theme_color": "#000000",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "orientation": "any",
+    "icons": [
+      {
+        "src": "/public/logo192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/public/logo144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "/public/logo128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "/public/logo96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+      },
+      {
+        "src": "/public/logo72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+      }
+    ]
+  }
