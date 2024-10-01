@@ -43,7 +43,7 @@ export const findAssignedShipment = async () => {
   }
 };
 
-export const startShipment = async (id: number) => {
+export const startShipment = async (id: string) => {
   try {
     console.log("starting shipment");
     let lat, lon;
@@ -53,7 +53,7 @@ export const startShipment = async (id: number) => {
           (pos) => res(pos.coords),
           (err) => {
             rej(err);
-          },
+          }
         );
       });
       lat = coords.latitude;
@@ -73,9 +73,9 @@ export const startShipment = async (id: number) => {
 };
 
 export const updateShipmentLocation = async (
-  id: number,
+  id: string,
   lat: number,
-  lon: number,
+  lon: number
 ) => {
   try {
     const { data } = await api.put(`/shipments/${id}`, {
@@ -90,7 +90,7 @@ export const updateShipmentLocation = async (
   }
 };
 
-export const completeShipment = async (id: number) => {
+export const completeShipment = async (id: string) => {
   try {
     const { data } = await api.put(`/shipments/${id}`, {
       data: { Status: "Delivered" },

@@ -10,16 +10,15 @@ import { useNavigate } from "react-router-dom";
 
 export interface Shipment {
   id: number;
-  attributes: {
-    ETA?: string;
-    Status: string;
-    createdAt: string;
-    lat?: number;
-    lon?: number;
-    publishedAt: string;
-    trackingHistory?: string;
-    updatedAt: string;
-  };
+  documentId: string;
+  ETA?: string;
+  orderStatus: string;
+  createdAt: string;
+  lat?: number;
+  lon?: number;
+  publishedAt: string;
+  trackingHistory?: string;
+  updatedAt: string;
 }
 
 export default function DriverDashboardPage() {
@@ -34,7 +33,9 @@ export default function DriverDashboardPage() {
       return;
     }
     setIsLoading(true);
-    const d = await startShipment(data.id).finally(() => setIsLoading(false));
+    const d = await startShipment(data.documentId).finally(() =>
+      setIsLoading(false)
+    );
     if (d.error) {
       setError(d.error.message);
       return;
@@ -50,8 +51,8 @@ export default function DriverDashboardPage() {
       return;
     }
     setIsLoading(true);
-    const d = await completeShipment(data.id).finally(() =>
-      setIsLoading(false),
+    const d = await completeShipment(data.documentId).finally(() =>
+      setIsLoading(false)
     );
     if (d.error) {
       setError(d.error.message);
@@ -81,16 +82,16 @@ export default function DriverDashboardPage() {
 
   useEffect(() => {
     if (
-      data?.attributes.Status.toLowerCase() === "in transit" &&
+      data?.orderStatus.toLowerCase() === "in transit" &&
       "geolocation" in navigator
     ) {
       const id = navigator.geolocation.watchPosition(
         async ({ coords }) => {
           console.log("updating shipment location");
           const d = await updateShipmentLocation(
-            data.id,
+            data.documentId,
             coords.latitude,
-            coords.longitude,
+            coords.longitude
           );
           if (d.error) {
             setError(d.error.message);
@@ -101,7 +102,7 @@ export default function DriverDashboardPage() {
         },
         (err) => {
           setError(err.message);
-        },
+        }
       );
 
       return () => {
@@ -134,12 +135,12 @@ export default function DriverDashboardPage() {
         {data ? (
           <>
             <p className="my-4">
-              Shipment Status:{" "}
+              Shipment orderStatus:{" "}
               <span className="text-warning text-lg uppercase font-bold bg-white w-fit p-2 rounded-2xl border border-[#0004] hover:shadow cursor-pointer">
-                {data.attributes.Status}
+                {data.orderStatus}
               </span>
             </p>
-            {data.attributes.Status.toLowerCase() === "pending" ? (
+            {data.orderStatus.toLowerCase() === "pending" ? (
               <button
                 disabled={isLoading}
                 onClick={handleStartShipment}
@@ -148,7 +149,7 @@ export default function DriverDashboardPage() {
                 {isLoading ? <Loader className="w-6 h-6" /> : "START SHIPMENT"}
               </button>
             ) : null}
-            {data.attributes.Status.toLowerCase() === "in transit" ? (
+            {data.orderStatus.toLowerCase() === "in transit" ? (
               <button
                 disabled={isLoading}
                 onClick={handleCompleteShipment}

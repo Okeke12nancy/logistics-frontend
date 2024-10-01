@@ -7,16 +7,14 @@ import { Shipment } from "./DriverDashboard";
 
 interface Order {
   id: number;
-  attributes: {
-    senderName: string;
-    receiverName: string;
-    itemDetails: string;
-    deliveryInstructions: string;
-    orderStatus: string;
-    publishedAt: string;
-    updatedAt: string;
-    shipment: { data: Shipment };
-  };
+  senderName: string;
+  receiverName: string;
+  itemDetails: string;
+  deliveryInstructions: string;
+  orderStatus: string;
+  publishedAt: string;
+  updatedAt: string;
+  shipment: { data: Shipment };
 }
 
 export default function TrackOrderPage() {
@@ -89,14 +87,10 @@ export default function TrackOrderPage() {
       <div className="w-[500px] my-4">
         <div className="flex items-center justify-between w-full">
           <h2 className="text-base">
-            Sender:{" "}
-            <span className="font-semibold">{data.attributes.senderName}</span>
+            Sender: <span className="font-semibold">{data.senderName}</span>
           </h2>
           <h2 className="text-base">
-            Receiver:{" "}
-            <span className="font-semibold">
-              {data.attributes.receiverName}
-            </span>
+            Receiver: <span className="font-semibold">{data.receiverName}</span>
           </h2>
         </div>
         <div className="flex flex-col gap-4 my-4">
@@ -104,37 +98,36 @@ export default function TrackOrderPage() {
             <span className="text-2xl font-medium">Item Details:</span>
             <input
               readOnly
-              value={data.attributes.itemDetails}
+              value={data.itemDetails}
               className="px-2 pt-2 outline-none border-b border-b-black border-t-[#000000aa] text-lg rounded-t-lg"
             />
           </label>
           <label className="flex flex-col items-start gap-1">
             <span className="text-2xl font-medium">Delivery Instructions:</span>
             <p className="px-2 pt-2 w-fit outline-none border-b border-b-black border-t-[#000000aa] text-lg rounded-t-lg">
-              {data.attributes.deliveryInstructions}
+              {data.deliveryInstructions}
             </p>
           </label>
         </div>
         <p className="text-warning text-lg uppercase font-bold bg-white w-fit p-2 rounded-2xl border border-[#0004] hover:shadow cursor-pointer">
-          {data.attributes.shipment.data.attributes?.Status ??
-            data.attributes.orderStatus}
+          {data.shipment.data?.orderStatus ?? data.orderStatus}
         </p>
       </div>
-      {data.attributes.shipment.data.attributes ? (
+      {data.shipment.data ? (
         <APIProvider apiKey={import.meta.env.VITE_MAP_API_KEY}>
           <Map
             style={{ width: "800px", height: "500px" }}
             defaultCenter={{
-              lat: data.attributes.shipment.data.attributes.lat!,
-              lng: data.attributes.shipment.data.attributes.lon!,
+              lat: data.shipment.data.lat!,
+              lng: data.shipment.data.lon!,
             }}
             defaultZoom={18}
             gestureHandling="greedy"
           >
             <Marker
               position={{
-                lat: data.attributes.shipment.data.attributes.lat!,
-                lng: data.attributes.shipment.data.attributes.lon!,
+                lat: data.shipment.data.lat!,
+                lng: data.shipment.data.lon!,
               }}
             />
           </Map>
